@@ -1,4 +1,5 @@
 #include "model.hpp"
+#include <cstdio>
 
 Model::Model(GLfloat *vertices)
 {

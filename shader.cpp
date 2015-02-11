@@ -79,12 +79,15 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
     fprintf(stderr, "The shader program did not link correctly.\n");
   }
 
+  // Set the attribute locations
+  const GLchar *position = "position";
+  const GLchar *color = "color";
+  glBindAttribLocation(shaderProgram, 0, position);
+  glBindAttribLocation(shaderProgram, 1, color);
+
+  // Clean up 
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
-
-  // Set the attribute locations
-  glBindAttribLocation(shaderProgram, 0, "position");
-  glBindAttribLocation(shaderProgram, 1, "color");
 
   // Return the shader program
   return shaderProgram;
