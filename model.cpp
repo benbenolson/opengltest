@@ -1,13 +1,16 @@
 #include "model.hpp"
 #include <cstdio>
 
-Model::Model(GLfloat *vertices)
+Model::Model(GLfloat *vertices, size_t size)
 {
-  // Create the VBO
+  // Create and activate the VBO
   GLuint vbo;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  // Copy the vertices to the graphics card
+  printf("Copying an array of size %lu.\n", size);
+  glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
   // Create the VAO
   glGenVertexArrays(1, &vao);

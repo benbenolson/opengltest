@@ -68,6 +68,14 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
   GLuint shaderProgram = glCreateProgram();
   glAttachShader(shaderProgram, vertexShader);
   glAttachShader(shaderProgram, fragmentShader);
+
+  // Set the attribute locations
+  const GLchar *position = "position";
+  const GLchar *color = "color";
+  glBindAttribLocation(shaderProgram, 0, position);
+  glBindAttribLocation(shaderProgram, 1, color);
+
+  // Bind and Link the program
   glBindFragDataLocation(shaderProgram, 0, "outColor");
   glLinkProgram(shaderProgram);
   glUseProgram(shaderProgram);
@@ -78,12 +86,6 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
   } else {
     fprintf(stderr, "The shader program did not link correctly.\n");
   }
-
-  // Set the attribute locations
-  const GLchar *position = "position";
-  const GLchar *color = "color";
-  glBindAttribLocation(shaderProgram, 0, position);
-  glBindAttribLocation(shaderProgram, 1, color);
 
   // Clean up 
   glDeleteShader(vertexShader);

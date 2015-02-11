@@ -2,6 +2,7 @@
 #include "window.hpp"
 #include "opengl.hpp"
 #include "model.hpp"
+#include "state.hpp"
 #include <cmath>
 #include <iostream>
 #include <cstdio>
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
     -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Vertex 3 (X, Y)
   };
 
-  Model base(vertices);
+  Model base(vertices, sizeof(vertices));
   State state;
   state.model = &base;
 

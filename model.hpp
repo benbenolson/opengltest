@@ -9,7 +9,7 @@ class Model
   private:
     GLuint vao;
   public:
-    Model(GLfloat *vertices);
+    Model(GLfloat *vertices, size_t size);
     void draw();
 };
 
