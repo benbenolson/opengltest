@@ -17,17 +17,22 @@ void draw(State *state)
 
 int main(int argc, char **argv)
 {
-  Window window;
-  Shader shader;
-
-  // Triangle of vertices
-  GLfloat vertices[] = {
-    0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1 (X, Y)
-    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2 (X, Y)
-    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Vertex 3 (X, Y)
+  float vertices[] = {
+    -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, // Top-left
+     1.0f,  1.0f, 0.0f, 1.0f, 0.0f, // Top-right
+     1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
+    -1.0f, -1.0f, 1.0f, 1.0f, 1.0f  // Bottom-left
   };
 
-  Model base(vertices, sizeof(vertices));
+  GLuint elements[] = {
+    0, 1, 2,
+    2, 3, 0
+  };
+
+
+  Window window;
+  Shader shader;
+  Model base(vertices, sizeof(vertices), elements, sizeof(elements));
   State state;
   state.model = &base;
 
