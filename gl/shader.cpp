@@ -1,21 +1,37 @@
 #include "shader.hpp"
-#include <cstdio>
-#include <cstdlib>
 
 using namespace std;
+
+void Shader::checkErrors()
+{
+  std::string message;
+  GLenum error = glGetError();
+  switch(error) {
+    case GL_INVALID_ENUM: message = "Invalid enum."; break;
+    case GL_INVALID_VALUE: message = "Invalid value."; break;
+    case GL_INVALID_OPERATION: message = "Invalid operation."; break;
+    case GL_INVALID_FRAMEBUFFER_OPERATION: message = "Invalid framebuffer operation."; break;
+    case GL_OUT_OF_MEMORY: message = "Out of memory."; break;
+    case GL_STACK_UNDERFLOW: message = "Stack underflow."; break;
+    case GL_STACK_OVERFLOW: message = "Stack overflow."; break;
+  }
+  if(error) {
+    fprintf(stderr, "SHADER ERROR: %s\n", message.c_str());
+  }
+}
 
 Shader::Shader()
 {
   // Default shaders
   const GLchar *vertexSource =
       "#version 150 core\n"
-      "in vec2 position;\n"
+      "in vec3 position;\n"
       "in vec3 color;\n"
       "out vec3 Color;\n"
       "void main()\n"
       "{\n"
       "   Color = color;\n"
-      "   gl_Position = vec4(position, 0.0, 1.0);\n"
+      "   gl_Position = vec4(position, 1.0);\n"
       "}\n";
   const GLchar *fragmentSource =
       "#version 150 core\n"
@@ -39,11 +55,13 @@ GLuint Shader::get()
 
 GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
+  checkErrors();
   // Load the vertex shader onto the graphics card and compile it
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
   glCompileShader(vertexShader);
 
+  // Error checking for the vertex shader
   GLint status;
   glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
   if(status == GL_TRUE) {
@@ -57,6 +75,7 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
   glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
   glCompileShader(fragmentShader);
 
+  // Error checking for the fragment shader
   glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
   if(status == GL_TRUE) {
     printf("Loaded fragment shader successfully.\n");
@@ -70,16 +89,15 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
   glAttachShader(shaderProgram, fragmentShader);
 
   // Set the attribute locations
-  const GLchar *position = "position";
-  const GLchar *color = "color";
-  glBindAttribLocation(shaderProgram, 0, position);
-  glBindAttribLocation(shaderProgram, 1, color);
+  glBindAttribLocation(shaderProgram, 0, "position");
+  glBindAttribLocation(shaderProgram, 1, "color");
 
   // Bind and Link the program
   glBindFragDataLocation(shaderProgram, 0, "outColor");
   glLinkProgram(shaderProgram);
   glUseProgram(shaderProgram);
-
+  
+  // Error checking for the GPU program
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
   if(status == GL_TRUE) {
     printf("Shader program linked successfully.\n");

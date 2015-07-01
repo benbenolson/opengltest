@@ -2,10 +2,11 @@
 #define STATE_HEADER
 
 #include "model.hpp"
+#include <vector>
 
 struct State
 {
-  Model *model;
+  std::vector<Model *> models;
 };
 
 #endif

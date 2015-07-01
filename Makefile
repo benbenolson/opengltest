@@ -14,14 +14,14 @@ war: $(OBJECTS)
 war.o: war.cpp
 	$(CC) $(CFLAGS) war.cpp
 
-shader.o: shader.cpp
-	$(CC) $(CFLAGS) shader.cpp
+shader.o: gl/shader.cpp
+	$(CC) $(CFLAGS) gl/shader.cpp
 
-window.o: window.cpp
-	$(CC) $(CFLAGS) window.cpp
+window.o: gl/window.cpp
+	$(CC) $(CFLAGS) gl/window.cpp
 
-model.o: model.cpp
-	$(CC) $(CFLAGS) model.cpp
+model.o: gl/model.cpp
+	$(CC) $(CFLAGS) gl/model.cpp
 
 clean:
 	rm *.o war

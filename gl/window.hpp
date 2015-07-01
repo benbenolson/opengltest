@@ -8,11 +8,12 @@ class Window
 {
   private:
     GLFWwindow *window;
-    GLFWwindow *startGLFW();
-    void startGLEW();
+    GLFWwindow *startGLFW(GLint width, GLint height);
     void checkErrors();
+    void startGLEW();
   public:
     Window();
+    Window(GLint width, GLint height);
     ~Window();
     GLFWwindow *get() const;
     void eventLoop(void (*draw)(State *), State *state);

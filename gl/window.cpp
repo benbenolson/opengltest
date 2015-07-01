@@ -16,7 +16,7 @@ void Window::checkErrors()
     case GL_STACK_OVERFLOW: message = "Stack overflow."; break;
   }
   if(error) {
-    fprintf(stderr, "OPENGL ERROR: %s\n", message.c_str());
+    fprintf(stderr, "WINDOW ERROR: %s\n", message.c_str());
   }
 }
 
@@ -27,8 +27,16 @@ GLFWwindow * Window::get() const
 
 Window::Window()
 {
-  window = startGLFW();
+  window = startGLFW(0, 0);
   startGLEW();
+  checkErrors();
+}
+
+Window::Window(GLint width, GLint height)
+{
+  window = startGLFW(width, height);
+  startGLEW();
+  checkErrors();
 }
 
 Window::~Window()
@@ -37,7 +45,7 @@ Window::~Window()
   glfwTerminate();
 }
 
-GLFWwindow * Window::startGLFW()
+GLFWwindow * Window::startGLFW(GLint width, GLint height)
 {
   // Initialize GLFW
   glfwInit();
@@ -47,14 +55,17 @@ GLFWwindow * Window::startGLFW()
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-  // Get the maximum screen resolution
-  GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-  const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+  
+  if((width == 0) || (height == 0)) {
+    // Get the maximum square screen resolution
+    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    width = mode->height;
+    height = mode->height;
+  }
 
   // Create the window and OpenGL context
-  GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "War", glfwGetPrimaryMonitor(), NULL);
+  GLFWwindow* window = glfwCreateWindow(width, height, "War", NULL, NULL);
   glfwMakeContextCurrent(window);
 
   return window;
@@ -78,7 +89,6 @@ void Window::eventLoop(void (*draw)(State *), State *state)
     glClear(GL_COLOR_BUFFER_BIT);
 
     draw(state);
-
     checkErrors();
 
     glfwSwapBuffers(window);

@@ -2,6 +2,9 @@
 #define SHADER_HPP
 
 #include "opengl.hpp"
+#include <string>
+#include <cstdio>
+#include <cstdlib>
 
 class Shader
 {
@@ -12,6 +15,7 @@ class Shader
   private:
     GLuint createShader(const GLchar *vertexSource, const GLchar *fragmentSource);
     GLuint program;
+    void checkErrors();
 };
 
 #endif
