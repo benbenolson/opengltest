@@ -6,7 +6,14 @@
 
 struct State
 {
-  std::vector<Model *> models;
+  private:
+    std::vector<Model> models;
+  public:
+    State();
+    void add(Model *model);
+    void drawall();
+    int size;
+
 };
 
 #endif

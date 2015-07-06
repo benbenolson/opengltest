@@ -50,6 +50,8 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   GLint colAttrib = 1;
   glEnableVertexAttribArray(colAttrib);
   glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *)(3 * sizeof(GLfloat)));
+
+//  glBindVertexArray(0);
 }
 
 // Draw the model to the screen

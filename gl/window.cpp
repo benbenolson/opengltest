@@ -60,13 +60,18 @@ GLFWwindow * Window::startGLFW(GLint width, GLint height)
     // Get the maximum square screen resolution
     GLFWmonitor *monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-    width = mode->height;
-    height = mode->height;
+    width = mode->height - 100;
+    height = mode->height - 100;
   }
 
   // Create the window and OpenGL context
+  glOrtho(0.0f, width, height, 0.0f, 0.0f, 1.0f);
   GLFWwindow* window = glfwCreateWindow(width, height, "War", NULL, NULL);
   glfwMakeContextCurrent(window);
+
+  //glMatrixMode(GL_PROJECTION);
+  //glLoadIdentity();
+  //glViewport(0, 0, width, height);
 
   return window;
 }
