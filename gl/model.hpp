@@ -14,7 +14,6 @@ class Model
     GLuint vao;
     GLuint ebo;
     GLuint texture_id;
-    GLuint texture_coord_id;
     void checkErrors();
     GLuint size;
   public:
