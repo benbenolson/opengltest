@@ -3,6 +3,6 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <GL/glATI.h>
+//#include <GL/glATI.h>
 
 #endif

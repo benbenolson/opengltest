@@ -82,21 +82,28 @@ void Window::startGLEW()
   glewInit();
 }
 
-void Window::eventLoop(void (*draw)(State *), State *state)
+void Window::handle_keys()
 {
-  while(!glfwWindowShouldClose(window)) {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-      glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-
-    // Clear the screen
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    draw(state);
-    checkErrors();
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
+  if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, GL_TRUE);
   }
+}
+
+void Window::clear_window()
+{
+  // Clear the screen
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Window::post_draw()
+{
+  checkErrors();
+  glfwSwapBuffers(window);
+  glfwPollEvents();
+}
+
+bool Window::should_close()
+{
+  return glfwWindowShouldClose(window);
 }

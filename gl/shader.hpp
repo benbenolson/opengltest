@@ -11,9 +11,8 @@ class Shader
   public:
     Shader();
     Shader(const GLchar *vertexSource, const GLchar *fragmentSource);
-    GLuint get();
   private:
-    GLuint createShader(const GLchar *vertexSource, const GLchar *fragmentSource);
+    void createShader(const GLchar *vertexSource, const GLchar *fragmentSource);
     GLuint program;
     void checkErrors();
 };

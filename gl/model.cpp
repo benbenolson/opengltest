@@ -18,7 +18,7 @@ void Model::checkErrors()
   }
 }
 
-Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize)
+Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize, std::string texture_filename)
 {
   size = vboSize;
 
@@ -27,7 +27,6 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
   // Copy the vertices to the graphics card
-  printf("Copying an array of size %lu.\n", vboSize);
   glBufferData(GL_ARRAY_BUFFER, vboSize, vertices, GL_STATIC_DRAW);
 
   // Create the VAO
@@ -50,6 +49,22 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   GLint colAttrib = 1;
   glEnableVertexAttribArray(colAttrib);
   glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *)(3 * sizeof(GLfloat)));
+
+  // Read in the texture
+  Image_PNG png = Image_PNG(texture_filename);
+
+  // Load the image data into a texture
+  glEnable(GL_TEXTURE_2D);
+  glGenTextures(1, &texture_id);
+  glBindTexture(GL_TEXTURE_2D, texture_id);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, png.width, png.height, 0, \
+               GL_RGBA, GL_UNSIGNED_BYTE, png.data);
+
+  // Set parameters
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 //  glBindVertexArray(0);
 }

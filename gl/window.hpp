@@ -16,7 +16,10 @@ class Window
     Window(GLint width, GLint height);
     ~Window();
     GLFWwindow *get() const;
-    void eventLoop(void (*draw)(State *), State *state);
+    void handle_keys();
+    void clear_window();
+    void post_draw();
+    bool should_close();
 };
 
 #endif

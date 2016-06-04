@@ -25,35 +25,35 @@ Shader::Shader()
   // Default shaders
   const GLchar *vertexSource =
       "#version 150 core\n"
-      "in vec3 position;\n"
-      "in vec3 color;\n"
+      "layout(location = 0) in vec3 position;\n"
+      "layout(location = 1) in vec3 color;\n"
+      "layout(location = 2) in vec2 texture_coord;\n"
       "out vec3 Color;\n"
+      "out vec2 Texture_coord;\n"
       "void main()\n"
       "{\n"
       "   Color = color;\n"
+      "   Texture_coord = texture_coord;\n"
       "   gl_Position = vec4(position, 1.0);\n"
       "}\n";
   const GLchar *fragmentSource =
       "#version 150 core\n"
       "in vec3 Color;\n"
+      "in vec2 Texture_coord;\n"
       "out vec4 outColor;\n"
+      "uniform sampler2D texture;\n"
       "void main() {\n"
-      "   outColor = vec4(Color, 1.0);\n"
+      "   outColor = texture2D(texture, Texture_coord);\n"
       "}\n";
-  program = createShader(vertexSource, fragmentSource);
+  createShader(vertexSource, fragmentSource);
 }
 
 Shader::Shader(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
-  program = createShader(vertexSource, fragmentSource);
+  createShader(vertexSource, fragmentSource);
 }
 
-GLuint Shader::get()
-{
-  return program;
-}
-
-GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSource)
+void Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
   checkErrors();
   // Load the vertex shader onto the graphics card and compile it
@@ -84,21 +84,22 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
   }
 
   // Now create a program from the two shaders
-  GLuint shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
+  program = glCreateProgram();
+  glAttachShader(program, vertexShader);
+  glAttachShader(program, fragmentShader);
 
   // Set the attribute locations
-  glBindAttribLocation(shaderProgram, 0, "position");
-  glBindAttribLocation(shaderProgram, 1, "color");
+  //glBindAttribLocation(program, 0, "position");
+  //glBindAttribLocation(program, 1, "color");
+  //glBindAttribLocation(program, 2, "texture");
 
   // Bind and Link the program
-  glBindFragDataLocation(shaderProgram, 0, "outColor");
-  glLinkProgram(shaderProgram);
-  glUseProgram(shaderProgram);
+  glBindFragDataLocation(program, 0, "outColor");
+  glLinkProgram(program);
+  glUseProgram(program);
   
   // Error checking for the GPU program
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
+  glGetProgramiv(program, GL_LINK_STATUS, &status);
   if(status == GL_TRUE) {
     printf("Shader program linked successfully.\n");
   } else {
@@ -108,7 +109,4 @@ GLuint Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSo
   // Clean up 
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
-
-  // Return the shader program
-  return shaderProgram;
 }

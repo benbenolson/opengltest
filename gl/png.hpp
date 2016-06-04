@@ -5,14 +5,14 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 class Image_PNG
 {
-  private:
   public:
     int width, height, bit_depth, color_type;
-    png_structp data;
-    void load(std::string filename);
+    png_bytep *data;
+    Image_PNG(std::string filename);
 };
 
 #endif

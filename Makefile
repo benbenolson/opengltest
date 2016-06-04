@@ -2,7 +2,7 @@ CC=clang++
 CFLAGS=-c -Wall
 LDFLAGS=
 LDLIBS=-lglfw -lGL -lGLEW -lpng
-OBJECTS=shader.o war.o window.o model.o state.o png.o
+OBJECTS=shader.o war.o window.o model.o state.o png.o tile.o map.o
 EXECUTABLE=war
 
 all: war
@@ -28,6 +28,12 @@ state.o: gl/state.cpp
 
 png.o: gl/png.cpp
 	$(CC) $(CFLAGS) gl/png.cpp
+
+tile.o: map/tile.cpp
+	$(CC) $(CFLAGS) map/tile.cpp
+
+map.o: map/map.cpp
+	$(CC) $(CFLAGS) map/map.cpp
 
 clean:
 	rm *.o war
