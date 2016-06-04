@@ -15,7 +15,6 @@ struct State
     void add(Model *model);
     void drawall();
     int size;
-
 };
 
 #endif

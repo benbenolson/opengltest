@@ -15,6 +15,6 @@ void State::add(Model *model)
 void State::drawall()
 {
   for(int i = 0; i < size; ++i) {
-    models[i].draw();
+    models[i].draw(shader->program);
   }
 }

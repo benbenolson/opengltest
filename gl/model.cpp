@@ -54,9 +54,10 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   Image_PNG png = Image_PNG(texture_filename);
 
   // Load the image data into a texture
+  GLuint texture_buffer_id;
   glEnable(GL_TEXTURE_2D);
-  glGenTextures(1, &texture_id);
-  glBindTexture(GL_TEXTURE_2D, texture_id);
+  glGenTextures(1, &texture_buffer_id);
+  glBindTexture(GL_TEXTURE_2D, texture_buffer_id);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, png.width, png.height, 0, \
                GL_RGBA, GL_UNSIGNED_BYTE, png.data);
 
@@ -66,13 +67,30 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0,
+                       (void *)(6 * sizeof(GLfloat)));
+
 //  glBindVertexArray(0);
 }
 
 // Draw the model to the screen
-void Model::draw()
+void Model::draw(GLuint program)
 {
+  // Bind the texture
+  glBindTexture(GL_TEXTURE_2D, texture_id);
+  texture_id = glGetUniformLocation(program, "texture");
+  texture_id = glGetUniformLocation(program, "texture");
+  glActiveTexture(GL_TEXTURE0);
+  glUniform1i(texture_id, 0);
+  checkErrors();
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  checkErrors();
+
   glBindVertexArray(vao);
+  checkErrors();
+
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
   checkErrors();
   glBindVertexArray(0);

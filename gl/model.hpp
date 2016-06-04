@@ -14,12 +14,13 @@ class Model
     GLuint vao;
     GLuint ebo;
     GLuint texture_id;
+    GLuint texture_coord_id;
     void checkErrors();
     GLuint size;
   public:
     Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize, std::string texture_filename);
     void print();
-    void draw();
+    void draw(GLuint program);
 };
 
 #endif
