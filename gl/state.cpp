@@ -2,6 +2,7 @@
 
 State::State()
 {
+  shader = new Shader;
   size = 0;
 }
 
@@ -14,6 +15,6 @@ void State::add(Model *model)
 void State::drawall()
 {
   for(int i = 0; i < size; ++i) {
-    models[i].draw(shader);
+    models[i].draw();
   }
 }

@@ -11,7 +11,6 @@ class Map {
   private:
     std::vector<Tile> tiles;
     Window *window;
-    Shader *shader;
     State *state;
     GLuint *elements;
     float w;

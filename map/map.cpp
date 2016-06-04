@@ -3,7 +3,6 @@
 Map::Map(float tile_width)
 {
   window = new Window;
-  shader = new Shader;
   state = new State;
   w = tile_width;
 }
