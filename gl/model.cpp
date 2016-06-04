@@ -83,7 +83,7 @@ void Model::draw(GLuint program)
   glBindTexture(GL_TEXTURE_2D, texture_id);
   checkErrors();
   std::cout << "Uniform" << std::endl;
-  glUniform1i(texture_id, 0);
+  glUniform1i(glGetUniformLocation(program, "texture"), 0);
   checkErrors();
 
   std::cout << "Binding buffer" << std::endl;
