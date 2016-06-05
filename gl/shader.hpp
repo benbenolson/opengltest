@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 class Shader
 {

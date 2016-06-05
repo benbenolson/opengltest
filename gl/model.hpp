@@ -3,7 +3,7 @@
 
 #include "shader.hpp"
 #include "opengl.hpp"
-#include "png.hpp"
+#include "lodepng.h"
 #include <string>
 #include <cstdio>
 

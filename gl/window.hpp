@@ -9,7 +9,7 @@ class Window
   private:
     GLFWwindow *window;
     GLFWwindow *startGLFW(GLint width, GLint height);
-    void checkErrors();
+    void checkErrors(std::string loc);
     void startGLEW();
   public:
     Window();
