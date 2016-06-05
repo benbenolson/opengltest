@@ -41,9 +41,9 @@ Shader::Shader()
       "in vec3 Color;\n"
       "in vec2 Texture_coord;\n"
       "out vec4 outColor;\n"
-      "uniform sampler2D texture;\n"
+      "uniform sampler2D diffuseTexture;\n"
       "void main() {\n"
-      "   outColor = texture2D(texture, Texture_coord);\n"
+      "   outColor = texture(diffuseTexture, Texture_coord);\n"
       "}\n";
   createShader(vertexSource, fragmentSource);
 }
@@ -55,7 +55,6 @@ Shader::Shader(const GLchar *vertexSource, const GLchar *fragmentSource)
 
 void Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
-  checkErrors();
   // Load the vertex shader onto the graphics card and compile it
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -80,7 +79,12 @@ void Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSour
   if(status == GL_TRUE) {
     printf("Loaded fragment shader successfully.\n");
   } else {
+    GLint logSize;
+    glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &logSize);
+    std::string infolog (logSize, '\0');
+    glGetShaderInfoLog(fragmentShader, logSize, NULL, &infolog[0]);
     fprintf(stderr, "The fragment shader did not compile successfully.\n");
+    fprintf(stderr, "%s\n", infolog.data());
   }
 
   // Now create a program from the two shaders
@@ -110,4 +114,5 @@ void Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSour
   // Clean up 
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
+  checkErrors();
 }

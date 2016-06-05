@@ -21,6 +21,7 @@ Tile::Tile(float x_coord, float y_coord, float tile_width, std::string texture_f
   for(i = 10; i <= 15; i++) {
     v[i] = 0.0f;
   }
+  v[14] = 1.0f;
   v[11] = 1.0f;
 
   v[16] = x_coord;
@@ -28,6 +29,8 @@ Tile::Tile(float x_coord, float y_coord, float tile_width, std::string texture_f
   for(i = 18; i <= 23; i++) {
     v[i] = 0.0f;
   }
+  v[22] = 1.0f;
+  v[23] = 1.0f;
   v[19] = 1.0f;
 
   v[24] = x_coord + tile_width;
@@ -35,6 +38,7 @@ Tile::Tile(float x_coord, float y_coord, float tile_width, std::string texture_f
   for(i = 26; i <= 31; i++) {
     v[i] = 0.0f;
   }
+  v[31] = 1.0f;
   v[27] = 1.0f;
   
   int n = 0;

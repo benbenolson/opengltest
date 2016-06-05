@@ -14,7 +14,7 @@ class Model
     GLuint vao;
     GLuint ebo;
     GLuint texture_id;
-    void checkErrors();
+    void checkErrors(std::string loc);
     GLuint size;
   public:
     Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize, std::string texture_filename);

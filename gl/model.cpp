@@ -1,6 +1,6 @@
 #include "model.hpp"
 
-void Model::checkErrors()
+void Model::checkErrors(std::string loc)
 {
   std::string message;
   GLenum error = glGetError();
@@ -14,7 +14,7 @@ void Model::checkErrors()
     case GL_STACK_OVERFLOW: message = "Stack overflow."; break;
   }
   if(error) {
-    fprintf(stderr, "MODEL ERROR: %s\n", message.c_str());
+    std::cerr << "Model::" << loc << " error: " << message << std::endl;
   }
 }
 
@@ -64,7 +64,7 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   glBindTexture(GL_TEXTURE_2D, texture_id);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
                GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
-  checkErrors();
+  checkErrors("Model()");
 
   // Set parameters
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -76,8 +76,6 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
                        (void *)(6 * sizeof(GLfloat)));
 
-  std::cout << "Generating texture " << texture_id << std::endl;
-//  glBindVertexArray(0);
 }
 
 // Draw the model to the screen
@@ -88,7 +86,7 @@ void Model::draw(GLuint program)
   // Bind the texture and create the uniform
   glBindTexture(GL_TEXTURE_2D, texture_id);
   glActiveTexture(GL_TEXTURE0);
-  GLint uniform_location = glGetUniformLocation(program, "texture");
+  GLint uniform_location = glGetUniformLocation(program, "diffuseTexture");
   glUniform1i(uniform_location, 0);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -98,7 +96,7 @@ void Model::draw(GLuint program)
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
 
-  checkErrors();
+  checkErrors("draw()");
 }
 
 // Print out the vertex array
@@ -111,5 +109,5 @@ void Model::print()
     printf("%f\n", *(data++));
   }
   glUnmapBuffer(GL_ARRAY_BUFFER);
-  checkErrors();
+  checkErrors("print()");
 }
