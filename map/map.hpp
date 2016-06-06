@@ -9,13 +9,14 @@
 
 class Map {
   private:
-    std::vector<Tile> tiles;
+    std::vector<Tile *> tiles;
     Window *window;
     State *state;
     GLuint *elements;
     float w;
   public:
     Map(float tile_width);
+    ~Map();
     void draw();
     void add_tile(float x_coord, float y_coord, std::string texture_filename);
     bool should_close();

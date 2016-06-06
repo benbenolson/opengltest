@@ -50,7 +50,7 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   glEnableVertexAttribArray(colAttrib);
   glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *)(3 * sizeof(GLfloat)));
 
-  // Read in the texture
+  // Read the texture into the "image" vector
   std::vector<unsigned char> image;
   unsigned width, height;
   unsigned error = lodepng::decode(image, width, height, texture_filename);
@@ -59,7 +59,7 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
     exit(1);
   }
 
-  // Load the image data into a texture
+  // Generate a new texture and load the image data into it
   glGenTextures(1, &texture_id);
   glBindTexture(GL_TEXTURE_2D, texture_id);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
@@ -75,22 +75,17 @@ Model::Model(GLfloat *vertices, size_t vboSize, GLuint *elements, size_t eboSize
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat),
                        (void *)(6 * sizeof(GLfloat)));
-
 }
 
 // Draw the model to the screen
 void Model::draw(GLuint program)
 {
-  glUseProgram(program);
-
   // Bind the texture and create the uniform
   glBindTexture(GL_TEXTURE_2D, texture_id);
   glActiveTexture(GL_TEXTURE0);
-  GLint uniform_location = glGetUniformLocation(program, "diffuseTexture");
-  glUniform1i(uniform_location, 0);
+  glUniform1i(glGetUniformLocation(program, "diffuseTexture"), 0);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
   glBindVertexArray(vao);
 
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -48,11 +48,6 @@ Shader::Shader()
   createShader(vertexSource, fragmentSource);
 }
 
-Shader::Shader(const GLchar *vertexSource, const GLchar *fragmentSource)
-{
-  createShader(vertexSource, fragmentSource);
-}
-
 void Shader::createShader(const GLchar *vertexSource, const GLchar *fragmentSource)
 {
   // Load the vertex shader onto the graphics card and compile it

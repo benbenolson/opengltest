@@ -6,6 +6,11 @@ State::State()
   size = 0;
 }
 
+State::~State()
+{
+  delete shader;
+}
+
 void State::add(Model *model)
 {
   models.push_back(*model);

@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -g
 LDFLAGS=
 LDLIBS=-lglfw -lGL -lGLEW -lpng
 OBJECTS=shader.o war.o window.o model.o state.o lodepng.o tile.o map.o

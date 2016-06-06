@@ -12,6 +12,7 @@ struct State
     Shader *shader;
   public:
     State();
+    ~State();
     void add(Model *model);
     void drawall();
     int size;
